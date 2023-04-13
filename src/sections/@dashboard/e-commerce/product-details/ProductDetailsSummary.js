@@ -34,11 +34,14 @@ ProductDetailsSummary.propTypes = {
   onGotoStep: PropTypes.func,
   product: PropTypes.shape({
     available: PropTypes.number,
+    colors: PropTypes.arrayOf(PropTypes.string),
     cover: PropTypes.string,
     id: PropTypes.string,
     inventoryType: PropTypes.string,
     name: PropTypes.string,
     price: PropTypes.number,
+    priceSale: PropTypes.number,
+    sizes: PropTypes.arrayOf(PropTypes.string),
     status: PropTypes.string,
     totalRating: PropTypes.number,
     totalReview: PropTypes.number,
@@ -57,7 +60,10 @@ export default function ProductDetailsSummary({ cart, product, onAddCart, onGoto
     price,
     cover,
     status,
+    colors,
     available,
+    priceSale,
+    totalRating,
     totalReview,
     inventoryType,
   } = product;
@@ -72,7 +78,7 @@ export default function ProductDetailsSummary({ cart, product, onAddCart, onGoto
     cover,
     available,
     price,
-
+    color: colors[0],
     size: sizes[4],
     quantity: available < 1 ? 0 : 1,
   };
@@ -138,11 +144,73 @@ export default function ProductDetailsSummary({ cart, product, onAddCart, onGoto
           {name}
         </Typography>
 
+        <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
+          <Rating value={totalRating} precision={0.1} readOnly />
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            ({fShortenNumber(totalReview)}
+            reviews)
+          </Typography>
+        </Stack>
+
+        <Typography variant="h4" sx={{ mb: 3 }}>
+          <Box component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
+            {priceSale && fCurrency(priceSale)}
+          </Box>
+          &nbsp;{fCurrency(price)}
+        </Typography>
+
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 3 }}>
+          <Typography variant="subtitle1" sx={{ mt: 0.5 }}>
+            Color
+          </Typography>
 
-       
+          <Controller
+            name="color"
+            control={control}
+            render={({ field }) => (
+              <ColorSinglePicker
+                colors={colors}
+                value={field.value}
+                onChange={field.onChange}
+                sx={{
+                  ...(colors.length > 4 && {
+                    maxWidth: 144,
+                    justifyContent: 'flex-end',
+                  }),
+                }}
+              />
+            )}
+          />
+        </Stack>
+
+        <Stack direction="row" justifyContent="space-between" sx={{ mb: 3 }}>
+          <Typography variant="subtitle1" sx={{ mt: 0.5 }}>
+            Size
+          </Typography>
+
+          <RHFSelect
+            name="size"
+            size="small"
+            fullWidth={false}
+            FormHelperTextProps={{
+              sx: { textAlign: 'right', margin: 0, mt: 1 },
+            }}
+            helperText={
+              <Link underline="always" color="text.secondary">
+                Size Chart
+              </Link>
+            }
+          >
+            {sizes.map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </RHFSelect>
+        </Stack>
+
         <Stack direction="row" justifyContent="space-between" sx={{ mb: 3 }}>
           <Typography variant="subtitle1" sx={{ mt: 0.5 }}>
             Quantity
@@ -183,7 +251,9 @@ export default function ProductDetailsSummary({ cart, product, onAddCart, onGoto
           </Button>
         </Stack>
 
-      
+        <Stack alignItems="center" sx={{ mt: 3 }}>
+          <SocialsButton initialColor />
+        </Stack>
       </FormProvider>
     </RootStyle>
   );

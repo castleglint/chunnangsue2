@@ -29,7 +29,21 @@ import CartWidget from '../../sections/@dashboard/e-commerce/CartWidget';
 // ----------------------------------------------------------------------
 
 const PRODUCT_DESCRIPTION = [
-
+  {
+    title: '100% Original',
+    description: 'Chocolate bar candy canes ice cream toffee cookie halvah.',
+    icon: 'ic:round-verified',
+  },
+  {
+    title: '10 Day Replacement',
+    description: 'Marshmallow biscuit donut dragée fruitcake wafer.',
+    icon: 'eva:clock-fill',
+  },
+  {
+    title: 'Year Warranty',
+    description: 'Cotton candy gingerbread cake I love sugar sweet.',
+    icon: 'ic:round-verified-user',
+  },
 ];
 
 const IconWrapperStyle = styled('div')(({ theme }) => ({
@@ -67,16 +81,12 @@ export default function EcommerceProductDetails() {
   };
 
   return (
-    <Page title="Product Details">
+    <Page title="Ecommerce: Product Details">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Product Details"
+          heading="รายละเอียด"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            {
-              name: 'E-Commerce',
-              href: PATH_DASHBOARD.eCommerce.root,
-            },
             {
               name: 'Shop',
               href: PATH_DASHBOARD.eCommerce.shop,
@@ -91,7 +101,7 @@ export default function EcommerceProductDetails() {
           <>
             <Card>
               <Grid container>
-                <Grid item xs={12} md={6} lg={7}>
+              <Grid item xs={12} md={6} lg={7}>
                   <ProductDetailsCarousel product={product} />
                 </Grid>
                 <Grid item xs={12} md={6} lg={5}>
@@ -142,9 +152,7 @@ export default function EcommerceProductDetails() {
                     <Markdown children={product.description} />
                   </Box>
                 </TabPanel>
-                <TabPanel value="2">
-                  <ProductDetailsReview product={product} />
-                </TabPanel>
+                
               </TabContext>
             </Card>
           </>
